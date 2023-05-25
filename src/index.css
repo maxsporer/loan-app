@@ -2,8 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --primary: #253f4b;
+  --secondary: #ff0800;
+  --tertiary: #4C6085;
+  --link: #ea3c53;
+  --bg: #f7f7f7;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
+  background-color: var(--bg);
+  color: var(--primary);
 }
 
 @font-face {
