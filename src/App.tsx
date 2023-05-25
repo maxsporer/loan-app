@@ -6,7 +6,7 @@ function App() {
   return (
     <div>
       <Header />
-      <div>
+      <div className="py-4 text-center">
         Calculate and view your loan amortization schedule.
       </div>
     </div>

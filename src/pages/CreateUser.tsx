@@ -1,14 +1,12 @@
 import React from 'react';
 import Header from '../components/Header';
-import Nav from '../components/Nav';
+import Form from '../components/Form';
 
 function CreateUser() {
   return (
     <div>
       <Header />
-      <div>
-        Create a User
-      </div>
+      <Form desc="Create a User"/>
     </div>
   )
 }
