@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import useViewport from '../utils/useViewport';
 
 function NavItem(props:any) {
   const {
@@ -7,9 +8,27 @@ function NavItem(props:any) {
     link
   } = props
 
+  var c = require('classnames');
+  const loc = useLocation();
+  const { width } = useViewport();
+  const isMdBp = width < 970;
+
   return (
-    <div>
-      <Link to={link}>{verb}</Link>
+    <div className={c({
+      "pr-2": true,
+      "pt-1": !isMdBp,
+      "pt-2": isMdBp,
+      })}
+    >
+      <Link
+      className={c({
+        "text-link": loc.pathname == link,
+        "text-tertiary hover:text-link hover:underline": loc.pathname != link,
+          })}
+          to={link}
+      >
+        {verb}
+      </Link>
     </div>
   )
 }

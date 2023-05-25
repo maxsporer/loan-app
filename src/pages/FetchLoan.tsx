@@ -6,11 +6,8 @@ function FetchLoan() {
   return (
     <div>
       <Header />
-      <div className="flex">
-        <Nav />
-        <div>
-          Fetch the amortization term for a Loan
-        </div>
+      <div>
+        Fetch the amortization term for a Loan
       </div>
     </div>
   )

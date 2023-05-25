@@ -1,12 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Nav from '../components/Nav';
+import useViewport from '../utils/useViewport';
 
 function Header() {
+  var c = require('classnames');
+  const { width } = useViewport();
+  const isMdBp = width < 970;
+
   return (
-    <div className="text-xl text-tertiary px-6 py-4 border-b-2 border-tertiary">
+    <div className={c({
+      "text-xl text-tertiary px-6 py-4 border-b-2 border-tertiary flex justify-between": true,
+      "flex-col": isMdBp,
+    })}>
       <Link to="/">
         Loan Amortization App | Greystone Labs
       </Link>
+      <Nav />
     </div>
   )
 }

@@ -6,11 +6,8 @@ function App() {
   return (
     <div>
       <Header />
-      <div className="flex">
-        <Nav />
-        <div>
-          Calculate and view your loan amortization schedule.
-        </div>
+      <div>
+        Calculate and view your loan amortization schedule.
       </div>
     </div>
   );

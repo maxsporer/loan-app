@@ -10,6 +10,7 @@ module.exports = {
         "primary": "var(--primary)",
         "secondary": "var(--secondary)",
         "tertiary": "var(--tertiary)",
+        "link": "var(--link)",
         "bg": "var(--bg)",
       },
     },

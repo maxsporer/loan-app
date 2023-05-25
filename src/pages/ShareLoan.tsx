@@ -6,11 +6,8 @@ function ShareLoan() {
   return (
     <div>
       <Header />
-      <div className="flex">
-        <Nav />
-        <div>
-          Share a Loan with another USer
-        </div>
+      <div>
+        Share a Loan with another User
       </div>
     </div>
   )

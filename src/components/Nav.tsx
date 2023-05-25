@@ -3,7 +3,7 @@ import NavItem from './NavItem';
 
 function Nav() {
   return (
-    <div>
+    <div className="flex text-base">
       <NavItem verb="Create Loan" link="/create-user" />
       <NavItem verb="Create User" link="/create-loan" />
       <NavItem verb="Fetch User" link="/fetch-user" />

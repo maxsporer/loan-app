@@ -6,11 +6,8 @@ function CreateLoan() {
   return (
     <div>
       <Header />
-      <div className="flex">
-        <Nav />
-        <div>
-          Create a Loan
-        </div>
+      <div>
+        Create a Loan
       </div>
     </div>
   )

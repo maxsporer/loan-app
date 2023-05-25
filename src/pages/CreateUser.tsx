@@ -6,11 +6,8 @@ function CreateUser() {
   return (
     <div>
       <Header />
-      <div className="flex">
-        <Nav />
-        <div>
-          Create a User
-        </div>
+      <div>
+        Create a User
       </div>
     </div>
   )
