@@ -1,14 +1,12 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from "axios";
+import './Form.scss';
 
-const baseUrl = 'https://lending-api.azurewebsites.net/users';
-
-function Form(props:any) {
-  const {
-    desc
-  } = props
+function UserPostForm() {
   var c = require('classnames');
+
+  const baseUrl = 'https://lending-api.azurewebsites.net/users';
 
   const [post, setPost] = useState(null);
   const [name, setName] = useState('');
@@ -39,18 +37,18 @@ function Form(props:any) {
   }
 
   return (
-    <div className="max-w-[750px] mx-auto mt-12">
-      <div className="bg-tertiary text-bg py-2 px-4 rounded-t-lg text-center">
-        {desc}
+    <div className="Form-modal">
+      <div className="Form-header">
+        Create a User
       </div>
-      <div className="flex flex-col rounded-b-lg border-x-2 border-b-2 border-tertiary">
+      <div className="Form-body">
         <form onSubmit={validateForm} className="p-4 flex flex-col">
           <label className="flex flex-col gap-y-2">
             Username :
-            <input className="p-1 border-2 rounded-md" type="text" value={name} onChange={handleChange}/>
+            <input className="Form-input p-1" type="text" value={name} onChange={handleChange}/>
             <div className={c({
               "hidden": !error,
-              "text-error text-sm mx-1": true,
+              "Form-error": true,
               })}
             >
               Username must by longer than two characters.
@@ -67,8 +65,8 @@ function Form(props:any) {
               </div>
             </div>
           }
-          <div className="flex pt-4 justify-center">
-            <input className="w-fit p-2 border-2 border-tertiary rounded-md hover:bg-tertiary hover:text-bg" type="submit" value="Create" />
+          <div className="Form-submitWrapper">
+            <input className="Form-submit" type="submit" value="Create" />
           </div>
         </form>
       </div>
@@ -76,4 +74,4 @@ function Form(props:any) {
   )
 }
 
-export default Form;
+export default UserPostForm;

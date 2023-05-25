@@ -1,0 +1,51 @@
+.Form {
+  &-modal {
+    max-width: 750px;
+    margin: 48px auto 0;
+  }
+
+  &-header {
+    background-color: var(--tertiary);
+    color: var(--bg);
+    padding: 8px 0;
+    text-align: center;
+    border-radius: 8px 8px 0 0;
+  }
+
+  &-body {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid var(--tertiary);
+    border-radius: 0 0 8px 8px;
+  }
+
+  &-error {
+    color: var(--error);
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0 4px;
+  }
+
+  &-input {
+    border: 2px solid var(--input);
+    border-radius: 6px;
+  }
+
+  &-submitWrapper {
+    display: flex;
+    padding-top: 16px;
+    justify-content: center;
+  }
+
+  &-submit {
+    width: fit;
+    padding: 8px;
+    border: 2px solid var(--tertiary);
+    border-radius: 6px;
+
+    &:hover {
+      background-color: var(--tertiary);
+      color: var(--bg);
+    }
+  }
+}
