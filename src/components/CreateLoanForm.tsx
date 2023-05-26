@@ -3,14 +3,16 @@ import { useState } from 'react';
 import axios from "axios";
 import './Form.scss';
 import getUsers from '../utils/getUsers';
+import UserSelect from './UserSelect';
 
-function LoanPostForm() {
+function CreateLoanForm() {
   var c = require('classnames');
 
   const loansURL = 'https://lending-api.azurewebsites.net/loans';
 
   const [post, setPost] = useState(null);
-  const [userIds, setUserIds] = useState<number[]>([]);
+  const [selected, setSelected] = useState(null);
+  const [id, setId] = useState(null);
   const [state, setState] = useState({
     amount: '',
     amountError: false,
@@ -18,8 +20,6 @@ function LoanPostForm() {
     aprError: false,
     term: '',
     termError: false,
-    id: '',
-    idError: false,
     active: true,
   })
 
@@ -30,10 +30,12 @@ function LoanPostForm() {
       "apr": state.apr,
       "term": state.term,
       "status": state.active ? 'active' : 'inactive',
-      "owner_id": state.id,
+      "owner_id": id,
     })
     .then((response) => {
       setPost(response.data);
+      setSelected(null);
+      setId(null);
       setState({
         amount: '',
         amountError: false,
@@ -41,8 +43,6 @@ function LoanPostForm() {
         aprError: false,
         term: '',
         termError: false,
-        id: '',
-        idError: false,
         active: true,
       });
     })
@@ -73,18 +73,10 @@ function LoanPostForm() {
     } else {
       newState.termError = false;
     }
-  
-    getUsers(setUserIds);
-    if (!userIds.includes(Number(state.id))) {
-      newState.id = '';
-      newState.idError = true;
-    } else {
-      newState.idError = false;
-    }
     
     setState({...newState});
 
-    if (!(state.amountError || state.aprError || state.termError || state.idError)) {
+    if (!(state.amountError || state.aprError || state.termError )) {
       createPost()
     }
   }
@@ -143,15 +135,12 @@ function LoanPostForm() {
 
           <label className="Form-label">
             Owner ID :
-            <input className="Form-input" name="id" type="number" value={state.id} onChange={handleChange} />
+            <UserSelect
+              selected={selected}
+              setSelected={setSelected}
+              setId={setId}
+            />
           </label>
-          <div className={c({
-            "hidden": !state.idError,
-            "Form-error": true,
-            })}
-          >
-            ID not found.
-          </div>
 
           <label className="flex gap-x-2">
             Active :
@@ -168,6 +157,7 @@ function LoanPostForm() {
                 <div>Amount: {post['amount']}</div>
                 <div>APR: {post['apr']}%</div>
                 <div>Term: {post['term']} yrs</div>
+                <div>Status: {post['status']}</div>
                 <div>Owner ID: {post['owner_id']}</div>
               </div>
             </div>
@@ -182,4 +172,4 @@ function LoanPostForm() {
   )
 }
 
-export default LoanPostForm;
+export default CreateLoanForm;

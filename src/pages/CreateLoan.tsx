@@ -1,12 +1,12 @@
 import React from 'react';
 import Header from '../components/Header';
-import LoanPostForm from '../components/LoanPostForm';
+import CreateLoanForm from '../components/CreateLoanForm';
 
 function CreateLoan() {
   return (
     <div>
       <Header />
-      <LoanPostForm />
+      <CreateLoanForm />
     </div>
   )
 }

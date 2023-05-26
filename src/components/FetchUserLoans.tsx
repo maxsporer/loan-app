@@ -6,7 +6,7 @@ import UserSelect from './UserSelect';
 import DataTable from './DataTable';
 import { Loan } from '../types';
 
-function UserFetchForm() {
+function FetchUserLoans() {
   var c = require('classnames');
   const [selected, setSelected] = useState(null);
   const [id, setId] = useState(null);
@@ -74,4 +74,4 @@ function UserFetchForm() {
   )
 }
 
-export default UserFetchForm;
+export default FetchUserLoans;

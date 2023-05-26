@@ -1,12 +1,12 @@
 import React from 'react';
 import Header from '../components/Header';
-import UserPostForm from '../components/UserPostForm';
+import CreateUserForm from '../components/CreateUserForm';
 
 function CreateUser() {
   return (
     <div>
       <Header />
-      <UserPostForm />
+      <CreateUserForm />
     </div>
   )
 }

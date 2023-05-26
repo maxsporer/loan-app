@@ -3,7 +3,7 @@ import { useState } from 'react';
 import axios from "axios";
 import './Form.scss';
 
-function UserPostForm() {
+function CreateUserForm() {
   var c = require('classnames');
 
   const usersURL = 'https://lending-api.azurewebsites.net/users';
@@ -80,4 +80,4 @@ function UserPostForm() {
   )
 }
 
-export default UserPostForm;
+export default CreateUserForm;
