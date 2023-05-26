@@ -1,13 +1,12 @@
 import React from 'react';
 import Header from '../components/Header';
+import FetchLoanData from '../components/FetchLoanData';
 
 function FetchLoan() {
   return (
     <div>
       <Header />
-      <div>
-        Fetch the amortization term for a Loan
-      </div>
+      <FetchLoanData />
     </div>
   )
 }

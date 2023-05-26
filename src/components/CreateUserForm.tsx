@@ -22,7 +22,7 @@ function CreateUserForm() {
       })
       .catch((error) => {
         console.error(error);
-      })
+      });
   }
   
   function validateForm() {

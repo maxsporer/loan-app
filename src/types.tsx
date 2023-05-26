@@ -6,3 +6,12 @@ export interface Loan {
   status: string;
   owner_id: number;
 }
+
+export interface LoanData {
+  month: number;
+  open_balance: number;
+  total_payment: number;
+  principal_payment: number;
+  interest_payment: number;
+  close_balance: number;
+}

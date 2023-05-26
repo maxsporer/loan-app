@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import axios from "axios";
 import './Form.scss';
 import UserSelect from './UserSelect';
 import DataTable from './DataTable';
 import { Loan } from '../types';
+import type { MRT_ColumnDef } from 'material-react-table';
 
 function FetchUserLoans() {
   var c = require('classnames');
@@ -11,20 +12,51 @@ function FetchUserLoans() {
   const [selected, setSelected] = useState(null);
   const [id, setId] = useState(null);
   const [error, setError] = useState(false);
-  const [get, setGet] = useState<Loan[]>();
+  const [loans, setLoans] = useState<Loan[]>();
+
+  // define columns for data table
+  const columns = useMemo<MRT_ColumnDef<Loan>[]>(
+    () => [
+      {
+        accessorKey: 'id',
+        header: 'ID',
+      },
+      {
+        accessorKey: 'amount',
+        header: 'Amount',
+      },
+      {
+        accessorKey: 'apr',
+        header: 'APR',
+      },
+      {
+        accessorKey: 'term',
+        header: 'Term',
+      },
+      {
+        accessorKey: 'status',
+        header: 'Status',
+      },
+      {
+        accessorKey: 'owner_id',
+        header: 'Owner ID',
+      },
+    ],
+    [],
+  );
 
   function createGet() {
-    const usersURL = `https://lending-api.azurewebsites.net/users/${id}/loans`;
+    const loansURL = `https://lending-api.azurewebsites.net/users/${id}/loans`;
     axios
-      .get(usersURL, {
+      .get(loansURL, {
         responseType: 'json',
       })
       .then((response) => {
-        setGet(response.data);
+        setLoans(response.data);
       })
       .catch((error) => {
         console.error(error);
-      })
+      });
   }
 
   function validateForm() {
@@ -66,8 +98,8 @@ function FetchUserLoans() {
           </div>
         </div>
       </div>
-      <div className="px-4 pt-8 z-0 relative">
-        {get && <DataTable data={get}/>}
+      <div className="px-4 pt-8 pb-4 z-0 relative">
+        {loans && <DataTable data={loans} columns={columns}/>}
       </div>
     </>
   )

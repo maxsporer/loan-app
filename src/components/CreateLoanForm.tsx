@@ -46,7 +46,7 @@ function CreateLoanForm() {
     })
     .catch((error) => {
       console.error(error);
-    })
+    });
   }
 
   function validateForm() {
@@ -74,6 +74,7 @@ function CreateLoanForm() {
     
     setState({...newState});
 
+    // !A and !B = !(A or B)
     if (!(state.amountError || state.aprError || state.termError )) {
       createPost()
     }

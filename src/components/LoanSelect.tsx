@@ -1,36 +1,34 @@
+
 import React from 'react';
 import Select from 'react-select';
-import axios from "axios";
+import axios from 'axios';
 
-function UserSelect(props:any) {
+function LoanSelect(props: any) {
   const {
+    data,
     selected,
     setSelected,
     setId,
-    setDependentSelected,
   } = props
 
-  const usersURL = 'https://lending-api.azurewebsites.net/users';
   const options: any[] = []
 
   function handleChange(selected: any) {
     setSelected(selected);
     setId(selected.id);
-
-    if (setDependentSelected) setDependentSelected(null);
   }
 
-  function getUsers() {
-    console.log('getUsers');
+  function getLoans() {
+    const loansURL = `https://lending-api.azurewebsites.net/users/${data}/loans`;
     axios
-      .get(usersURL, {
+      .get(loansURL, {
         responseType: 'json',
       })
       .then((response) => {
-        response.data.forEach((user: any) => {
-          const label = `(${user.id}) ${user.username}`
+        response.data.forEach((loan: any) => {
+          const label = `(${loan.id}) (${loan.owner_id}) $${loan.amount}`
           options.push({
-            id: user.id,
+            id: loan.id,
             value: label,
             label: label
           })
@@ -41,18 +39,18 @@ function UserSelect(props:any) {
       });
   }
 
-  if (options.length === 0) getUsers();
+  if (options.length === 0) getLoans();
 
   return (
     <div>
       <Select
         value={selected}
         options={options}
-        placeholder="(id) username"
+        placeholder="(id) (owner id) amount"
         onChange={handleChange}
       />
     </div>
   )
 }
 
-export default UserSelect;
+export default LoanSelect;
