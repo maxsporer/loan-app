@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import axios from "axios";
-import './Form.scss';
+import '../style/Form.scss';
 import UserSelect from './UserSelect';
 import DataTable from './DataTable';
 import { Loan } from '../types';

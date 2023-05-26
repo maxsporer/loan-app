@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import axios from 'axios';
-import './Form.scss';
+import '../style/Form.scss';
 import UserSelect from './UserSelect';
 import LoanSelect from './LoanSelect';
 import type { MRT_ColumnDef } from 'material-react-table';
@@ -12,10 +12,12 @@ function FetchLoanData() {
 
   const [selectedUser, setSelectedUser] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [userError, setUserError] = useState(false);
+
   const [selectedLoan, setSelectedLoan] = useState(null);
   const [loanId, setLoanId] = useState(null);
-  const [userError, setUserError] = useState(false);
   const [loanError, setLoanError] = useState(false);
+
   const [loanData, setLoanData] = useState<LoanData[]>();
 
   // define columns for data table
@@ -96,7 +98,7 @@ function FetchLoanData() {
                 selected={selectedUser}
                 setSelected={setSelectedUser}
                 setId={setUserId}
-                setDependentSelected={setSelectedLoan}
+                setDependentSelected={[setSelectedLoan]}
               />
 
               <div className={c({
@@ -119,7 +121,7 @@ function FetchLoanData() {
                 />
 
                 <div className={c({
-                  "hidden": !loanError || selectedLoan != null ||  userError,
+                  "hidden": !loanError || selectedLoan != null || userError,
                   "Form-error": true,
                   })}
                 >
@@ -127,6 +129,7 @@ function FetchLoanData() {
                 </div>
               </label>
             }
+
             <div className="Form-submitWrapper">
               <button type="button" className="Form-submit" onClick={validateForm}>Fetch</button>
             </div>

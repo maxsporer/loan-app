@@ -1,13 +1,12 @@
 import React from 'react';
 import Header from '../components/Header';
+import ShareLoanForm from '../components/ShareLoanForm';
 
 function ShareLoan() {
   return (
     <div>
       <Header />
-      <div>
-        Share a Loan with another User
-      </div>
+      <ShareLoanForm />
     </div>
   )
 }

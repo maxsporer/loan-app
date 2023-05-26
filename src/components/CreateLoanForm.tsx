@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from "axios";
-import './Form.scss';
+import '../style/Form.scss';
 import UserSelect from './UserSelect';
 
 function CreateLoanForm() {
@@ -23,30 +23,30 @@ function CreateLoanForm() {
 
   function createPost() {
     axios
-    .post(loansURL, {
-      "amount": state.amount,
-      "apr": state.apr,
-      "term": state.term,
-      "status": state.active ? 'active' : 'inactive',
-      "owner_id": id,
-    })
-    .then((response) => {
-      setPost(response.data);
-      setSelected(null);
-      setId(null);
-      setState({
-        amount: '',
-        amountError: false,
-        apr: '',
-        aprError: false,
-        term: '',
-        termError: false,
-        active: true,
+      .post(loansURL, {
+        "amount": state.amount,
+        "apr": state.apr,
+        "term": state.term,
+        "status": state.active ? 'active' : 'inactive',
+        "owner_id": id,
+      })
+      .then((response) => {
+        setPost(response.data);
+        setSelected(null);
+        setId(null);
+        setState({
+          amount: '',
+          amountError: false,
+          apr: '',
+          aprError: false,
+          term: '',
+          termError: false,
+          active: true,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
       });
-    })
-    .catch((error) => {
-      console.error(error);
-    });
   }
 
   function validateForm() {
@@ -150,7 +150,7 @@ function CreateLoanForm() {
           {post &&
             <div className="flex flex-col pt-4">
               <div className="pb-1">
-                Loan created
+                Loan created.
               </div>
               <div className="text-sm">
                 <div>ID: {post['id']}</div>

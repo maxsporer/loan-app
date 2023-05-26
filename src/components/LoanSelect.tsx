@@ -9,6 +9,7 @@ function LoanSelect(props: any) {
     selected,
     setSelected,
     setId,
+    ownerId,
   } = props
 
   const options: any[] = []
@@ -26,7 +27,13 @@ function LoanSelect(props: any) {
       })
       .then((response) => {
         response.data.forEach((loan: any) => {
-          const label = `(${loan.id}) (${loan.owner_id}) $${loan.amount}`
+          // only include loans with this owner
+          if (ownerId && ownerId !== loan.owner_id) return;
+          
+          const label = (ownerId === null ?
+            `(${loan.id}) (${loan.owner_id}) $${loan.amount}`
+            : `(${loan.id}) $${loan.amount}`
+          );
           options.push({
             id: loan.id,
             value: label,
@@ -41,12 +48,17 @@ function LoanSelect(props: any) {
 
   if (options.length === 0) getLoans();
 
+  const placeholder = (ownerId === null ?
+    "(id) (owner id) amount" :
+    "(id) amount"
+  );
+
   return (
     <div>
       <Select
         value={selected}
         options={options}
-        placeholder="(id) (owner id) amount"
+        placeholder={placeholder}
         onChange={handleChange}
       />
     </div>

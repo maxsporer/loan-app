@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from "axios";
-import './Form.scss';
+import '../style/Form.scss';
 
 function CreateUserForm() {
   var c = require('classnames');
@@ -61,7 +61,7 @@ function CreateUserForm() {
           {post &&
             <div className="flex flex-col pt-4">
               <div className="pb-1 ">
-                User created
+                User created.
               </div>
               <div className="text-sm">
                 <div>Username: {post['username']}</div>

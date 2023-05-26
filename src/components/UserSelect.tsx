@@ -8,6 +8,7 @@ function UserSelect(props:any) {
     setSelected,
     setId,
     setDependentSelected,
+    omitId,
   } = props
 
   const usersURL = 'https://lending-api.azurewebsites.net/users';
@@ -17,18 +18,24 @@ function UserSelect(props:any) {
     setSelected(selected);
     setId(selected.id);
 
-    if (setDependentSelected) setDependentSelected(null);
+    if (setDependentSelected) {
+      setDependentSelected.forEach((set: any) => {
+        set(null);
+      });
+    }
   }
 
   function getUsers() {
-    console.log('getUsers');
     axios
       .get(usersURL, {
         responseType: 'json',
       })
       .then((response) => {
         response.data.forEach((user: any) => {
-          const label = `(${user.id}) ${user.username}`
+          // omit this user from list
+          if (omitId && user.id === omitId) return;
+
+          const label = `(${user.id}) ${user.username}`;
           options.push({
             id: user.id,
             value: label,
