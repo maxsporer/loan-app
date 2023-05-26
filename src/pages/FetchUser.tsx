@@ -1,13 +1,12 @@
 import React from 'react';
 import Header from '../components/Header';
+import UserFetchForm from '../components/UserFetchForm';
 
 function FetchUser() {
   return (
     <div>
       <Header />
-      <div>
-        Fetch all User's Loans
-      </div>
+      <UserFetchForm />
     </div>
   )
 }

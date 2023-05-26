@@ -2,12 +2,12 @@ import React from 'react';
 import { useState } from 'react';
 import axios from "axios";
 import './Form.scss';
+import getUsers from '../utils/getUsers';
 
 function LoanPostForm() {
   var c = require('classnames');
 
   const loansURL = 'https://lending-api.azurewebsites.net/loans';
-  const usersURL = 'https://lending-api.azurewebsites.net/users';
 
   const [post, setPost] = useState(null);
   const [userIds, setUserIds] = useState<number[]>([]);
@@ -74,7 +74,7 @@ function LoanPostForm() {
       newState.termError = false;
     }
   
-    getUsers();
+    getUsers(setUserIds);
     if (!userIds.includes(Number(state.id))) {
       newState.id = '';
       newState.idError = true;
@@ -89,28 +89,12 @@ function LoanPostForm() {
     }
   }
 
-  function getUsers() {
-    axios
-      .get(usersURL, {
-        responseType: 'json',
-      })
-      .then((response) => {
-        var existingIds = [];
-        for (var user in response.data) {
-          existingIds.push(response.data[user].id)
-        }
-        setUserIds(existingIds);
-      })
-      .catch((error) => {
-        console.error(error);
-      })
-  }
-
   function handleChange(event:any) {
-    const value = event.target.type === "checkbox" ? event.target.checked : event.target.value;
+    const isCheckbox = event.target.type === "checkbox";
+    const value = isCheckbox ? event.target.checked : event.target.value;
     setState({
       ...state,
-      [event.target.name]: String(value)
+      [event.target.name]: isCheckbox ? value : String(value)
     });
   }
 

@@ -22,8 +22,8 @@ function NavItem(props:any) {
     >
       <Link
       className={c({
-        "text-link": loc.pathname == link,
-        "text-tertiary hover:text-link hover:underline": loc.pathname != link,
+        "text-link": loc.pathname === link,
+        "text-tertiary hover:text-link hover:underline": loc.pathname !== link,
           })}
           to={link}
       >
