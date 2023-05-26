@@ -53,8 +53,7 @@ function ShareLoanForm() {
       setLoanError(false);
     }
 
-    // !A and !B = !(A or B)
-    if (!(ownerError || userError || loanError)) {
+    if (ownerId && userId && loanId) {
       createPost();
     }
   }

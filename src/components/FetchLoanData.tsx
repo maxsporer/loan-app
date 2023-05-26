@@ -78,8 +78,7 @@ function FetchLoanData() {
       setLoanError(false);
     }
 
-    // !A and !B = !(A or B)
-    if (!(userError || loanError)) {
+    if (userId && loanId) {
       createGet();
     }
   }
