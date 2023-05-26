@@ -122,7 +122,7 @@ function CreateLoanForm() {
           </div>
 
           <label className="Form-label">
-            Term (yrs):
+            Term (months):
             <input className="Form-input" name="term" type="number" value={state.term} onChange={handleChange} />
           </label>
           <div className={c({
@@ -156,7 +156,7 @@ function CreateLoanForm() {
                 <div>ID: {post['id']}</div>
                 <div>Amount: {post['amount']}</div>
                 <div>APR: {post['apr']}%</div>
-                <div>Term: {post['term']} yrs</div>
+                <div>Term: {post['term']} months</div>
                 <div>Status: {post['status']}</div>
                 <div>Owner ID: {post['owner_id']}</div>
               </div>

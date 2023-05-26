@@ -19,33 +19,49 @@ function FetchLoanData() {
   const [loanError, setLoanError] = useState(false);
 
   const [loanData, setLoanData] = useState<LoanData[]>();
-
+  
   // define columns for data table
   const columns = useMemo<MRT_ColumnDef<LoanData>[]>(
     () => [
       {
         accessorKey: 'month',
         header: 'Month',
+        size: 50,
       },
       {
         accessorKey: 'open_balance',
         header: 'Open Balance',
+        Cell: ({cell}) => (
+          <span>${cell.getValue<number>().toFixed(2)}</span>
+        ),
       },
       {
         accessorKey: 'total_payment',
         header: 'Total Payment',
+        Cell: ({cell}) => (
+          <span>${cell.getValue<number>().toFixed(2)}</span>
+        ),
       },
       {
         accessorKey: 'principal_payment',
         header: 'Principal Payment',
+        Cell: ({cell}) => (
+          <span>${cell.getValue<number>().toFixed(2)}</span>
+        ),
       },
       {
         accessorKey: 'interest_payment',
         header: 'Interest Payment',
+        Cell: ({cell}) => (
+          <span>${cell.getValue<number>().toFixed(2)}</span>
+        ),
       },
       {
         accessorKey: 'close_balance',
         header: 'Close Balance',
+        Cell: ({cell}) => (
+          <span>${cell.getValue<number>().toFixed(2)}</span>
+        ),
       },
     ],
     [],
@@ -58,6 +74,7 @@ function FetchLoanData() {
         responseType: 'json',
       })
       .then((response) => {
+        console.log(response.data);
         setLoanData(response.data);
       })
       .catch((error) => {

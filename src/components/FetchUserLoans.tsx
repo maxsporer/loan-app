@@ -20,18 +20,28 @@ function FetchUserLoans() {
       {
         accessorKey: 'id',
         header: 'ID',
+        size: 50,
       },
       {
         accessorKey: 'amount',
         header: 'Amount',
+        Cell: ({cell}) => (
+          <span>${cell.getValue<number>().toFixed(2)}</span>
+        ),
       },
       {
         accessorKey: 'apr',
         header: 'APR',
+        Cell: ({cell}) => (
+          <span>{cell.getValue<number>()}%</span>
+        ),
       },
       {
         accessorKey: 'term',
         header: 'Term',
+        Cell: ({cell}) => (
+          <span>{cell.getValue<number>()} mos</span>
+        ),
       },
       {
         accessorKey: 'status',
