@@ -1,7 +1,8 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Select from 'react-select';
 import axios from 'axios';
+import MonthSelect from './MonthSelect';
 
 function LoanSelect(props: any) {
   const {
@@ -10,13 +11,18 @@ function LoanSelect(props: any) {
     setSelected,
     setId,
     ownerId,
-  } = props
+  } = props;
 
-  const options: any[] = []
+  let options: any[] = [];
+
+  const [monthOption, setMonthOption] = useState(null);
+  const [summary, setSummary] = useState(null);
 
   function handleChange(selected: any) {
     setSelected(selected);
     setId(selected.id);
+    setMonthOption(null);
+    setSummary(null);
   }
 
   function getLoans() {
@@ -29,13 +35,17 @@ function LoanSelect(props: any) {
         response.data.forEach((loan: any) => {
           // only include loans with this owner
           if (ownerId && ownerId !== loan.owner_id) return;
-          
           const label = (ownerId === null ?
             `(${loan.id}) (${loan.owner_id}) $${loan.amount}`
             : `(${loan.id}) $${loan.amount}`
           );
           options.push({
             id: loan.id,
+            amount: loan.amount,
+            apr: loan.apr,
+            term: loan.term,
+            status: loan.status,
+            owner_id: loan.owner_id,
             value: label,
             label: label
           })
@@ -61,6 +71,28 @@ function LoanSelect(props: any) {
         placeholder={placeholder}
         onChange={handleChange}
       />
+
+      {selected &&
+        <div className="flex p-2 gap-x-4">
+          <div className="text-sm flex flex-col">
+            <div>ID: {selected['id']}</div>
+            <div>Owner ID: {selected['owner_id']}</div>
+            <div>Amount: ${selected['amount']}</div>
+            <div>APR: {selected['apr']}%</div>
+            <div>Term: {selected['term']} months</div>
+            <div>Status: {selected['status']}</div>
+          </div>
+          <MonthSelect
+            userId={selected['owner_id']}
+            loanId={selected['id']}
+            term={selected['term']}
+            selected={monthOption}
+            setSelected={setMonthOption}
+            summary={summary}
+            setSummary={setSummary}
+          />
+        </div>
+      }
     </div>
   )
 }

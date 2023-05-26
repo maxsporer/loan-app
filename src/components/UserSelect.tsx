@@ -9,10 +9,10 @@ function UserSelect(props:any) {
     setId,
     setDependentSelected,
     omitId,
-  } = props
+  } = props;
 
   const usersURL = 'https://lending-api.azurewebsites.net/users';
-  const options: any[] = []
+  let options: any[] = []
 
   function handleChange(selected: any) {
     setSelected(selected);

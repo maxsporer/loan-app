@@ -8,7 +8,6 @@ module.exports = {
       colors: {
         "black": "#000000",
         "primary": "var(--primary)",
-        "secondary": "var(--secondary)",
         "tertiary": "var(--tertiary)",
         "link": "var(--link)",
         "error": "var(--error)",

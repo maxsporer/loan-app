@@ -6,7 +6,7 @@ function NavItem(props:any) {
   const {
     verb,
     link
-  } = props
+  } = props;
 
   var c = require('classnames');
   const loc = useLocation();

@@ -74,7 +74,6 @@ function FetchLoanData() {
         responseType: 'json',
       })
       .then((response) => {
-        console.log(response.data);
         setLoanData(response.data);
       })
       .catch((error) => {
@@ -134,6 +133,7 @@ function FetchLoanData() {
                   selected={selectedLoan}
                   setSelected={setSelectedLoan}
                   setId={setLoanId}
+                  ownerId={null}
                 />
 
                 <div className={c({
@@ -152,9 +152,11 @@ function FetchLoanData() {
           </div>
         </div>
       </div>
-      <div className="px-4 pt-8 pb-4 z-0 relative">
-        {loanData && <DataTable data={loanData} columns={columns} />}
-      </div>
+      {loanData &&
+        <div className="px-4 pt-8 pb-4 z-0 relative">
+          <DataTable data={loanData} columns={columns} />
+        </div>
+      }
     </>
   )
 }

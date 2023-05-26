@@ -108,9 +108,11 @@ function FetchUserLoans() {
           </div>
         </div>
       </div>
-      <div className="px-4 pt-8 pb-4 z-0 relative">
-        {loans && <DataTable data={loans} columns={columns}/>}
-      </div>
+      {loans &&
+        <div className="px-4 pt-8 pb-4 z-0 relative">
+          <DataTable data={loans} columns={columns}/>
+        </div>
+      }
     </>
   )
 }

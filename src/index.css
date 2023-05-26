@@ -14,11 +14,10 @@ body {
 
 :root {
   --primary: #253f4b;
-  --secondary: #ff0800;
   --tertiary: #4C6085;
   --link: #ea3c53;
   --error: #FF0000;
-  --input: #e5e7eb;
+  --input: #ccc;
   --bg: #f7f7f7;
 }
 

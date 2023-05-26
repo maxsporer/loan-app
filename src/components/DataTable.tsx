@@ -9,6 +9,7 @@ function DataTable(props:any) {
     <MaterialReactTable
       columns={columns}
       data={data}
+      enableFullScreenToggle={false}
     />
   )
 }
