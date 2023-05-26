@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import axios from "axios";
 import './Form.scss';
 import UserSelect from './UserSelect';
@@ -8,6 +7,7 @@ import { Loan } from '../types';
 
 function FetchUserLoans() {
   var c = require('classnames');
+
   const [selected, setSelected] = useState(null);
   const [id, setId] = useState(null);
   const [error, setError] = useState(false);
@@ -21,7 +21,6 @@ function FetchUserLoans() {
       })
       .then((response) => {
         setGet(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         console.error(error);

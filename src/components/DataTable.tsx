@@ -9,6 +9,10 @@ function DataTable(props:any) {
   const columns = useMemo<MRT_ColumnDef<Loan>[]>(
     () => [
       {
+        accessorKey: 'id',
+        header: 'ID',
+      },
+      {
         accessorKey: 'amount',
         header: 'Amount',
       },

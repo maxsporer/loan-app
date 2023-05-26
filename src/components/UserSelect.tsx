@@ -18,6 +18,7 @@ function UserSelect(props:any) {
   }
 
   function getUsers() {
+    console.log('getUsers');
     axios
       .get(usersURL, {
         responseType: 'json',
@@ -37,9 +38,7 @@ function UserSelect(props:any) {
       })
   }
 
-  if (options.length === 0) {
-    getUsers();
-  }
+  if (options.length === 0) getUsers();
 
   return (
     <div>

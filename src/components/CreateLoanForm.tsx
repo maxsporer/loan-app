@@ -1,8 +1,6 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import axios from "axios";
 import './Form.scss';
-import getUsers from '../utils/getUsers';
 import UserSelect from './UserSelect';
 
 function CreateLoanForm() {
@@ -84,6 +82,7 @@ function CreateLoanForm() {
   function handleChange(event:any) {
     const isCheckbox = event.target.type === "checkbox";
     const value = isCheckbox ? event.target.checked : event.target.value;
+    
     setState({
       ...state,
       [event.target.name]: isCheckbox ? value : String(value)
