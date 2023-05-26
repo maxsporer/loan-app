@@ -3,6 +3,7 @@ import axios from 'axios';
 import '../style/Form.scss';
 import UserSelect from './UserSelect';
 import LoanSelect from './LoanSelect';
+import MonthSelect from './MonthSelect';
 import type { MRT_ColumnDef } from 'material-react-table';
 import { LoanData } from '../types';
 import DataTable from './DataTable';
@@ -18,7 +19,11 @@ function FetchLoanData() {
   const [loanId, setLoanId] = useState(null);
   const [loanError, setLoanError] = useState(false);
 
+  const [monthOption, setMonthOption] = useState(null);
+  const [summary, setSummary] = useState(null);
+
   const [loanData, setLoanData] = useState<LoanData[]>();
+
   
   // define columns for data table
   const columns = useMemo<MRT_ColumnDef<LoanData>[]>(
@@ -134,6 +139,7 @@ function FetchLoanData() {
                   setSelected={setSelectedLoan}
                   setId={setLoanId}
                   ownerId={null}
+                  setDependentSelected={[setMonthOption, setSummary]}
                 />
 
                 <div className={c({
@@ -145,6 +151,32 @@ function FetchLoanData() {
                 </div>
               </label>
             }
+
+            {selectedLoan &&
+              <div className="flex p-2 gap-x-4">
+                <div className="text-sm">
+                  ID: {selectedLoan['id']}
+                  <div className="flex flex-col pt-1">
+                    <div>Owner ID: {selectedLoan['owner_id']}</div>
+                    <div>Amount: ${selectedLoan['amount']}</div>
+                    <div>APR: {selectedLoan['apr']}%</div>
+                    <div>Term: {selectedLoan['term']} months</div>
+                    <div>Status: {selectedLoan['status']}</div>
+                  </div>
+                </div>
+                <MonthSelect
+                  userId={selectedLoan['owner_id']}
+                  loanId={selectedLoan['id']}
+                  term={selectedLoan['term']}
+                  selected={monthOption}
+                  setSelected={setMonthOption}
+                  summary={summary}
+                  setSummary={setSummary}
+                />
+              </div>
+            }
+
+
 
             <div className="Form-submitWrapper">
               <button type="button" className="Form-submit" onClick={validateForm}>Fetch</button>

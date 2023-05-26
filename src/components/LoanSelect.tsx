@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
 import axios from 'axios';
-import MonthSelect from './MonthSelect';
 
 function LoanSelect(props: any) {
   const {
@@ -11,18 +10,20 @@ function LoanSelect(props: any) {
     setSelected,
     setId,
     ownerId,
+    setDependentSelected,
   } = props;
 
   let options: any[] = [];
 
-  const [monthOption, setMonthOption] = useState(null);
-  const [summary, setSummary] = useState(null);
-
   function handleChange(selected: any) {
     setSelected(selected);
     setId(selected.id);
-    setMonthOption(null);
-    setSummary(null);
+
+    if (setDependentSelected) {
+      setDependentSelected.forEach((set: any) => {
+        set(null);
+      });
+    }
   }
 
   function getLoans() {
@@ -71,28 +72,6 @@ function LoanSelect(props: any) {
         placeholder={placeholder}
         onChange={handleChange}
       />
-
-      {selected &&
-        <div className="flex p-2 gap-x-4">
-          <div className="text-sm flex flex-col">
-            <div>ID: {selected['id']}</div>
-            <div>Owner ID: {selected['owner_id']}</div>
-            <div>Amount: ${selected['amount']}</div>
-            <div>APR: {selected['apr']}%</div>
-            <div>Term: {selected['term']} months</div>
-            <div>Status: {selected['status']}</div>
-          </div>
-          <MonthSelect
-            userId={selected['owner_id']}
-            loanId={selected['id']}
-            term={selected['term']}
-            selected={monthOption}
-            setSelected={setMonthOption}
-            summary={summary}
-            setSummary={setSummary}
-          />
-        </div>
-      }
     </div>
   )
 }
