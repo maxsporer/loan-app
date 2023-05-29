@@ -1,5 +1,9 @@
 import React from 'react';
 
+/**
+ * Returns current width of window
+ * @returns number
+ */
 const useViewport = () => {
   const [width, setWidth] = React.useState(window.innerWidth);
 

@@ -13,6 +13,11 @@ interface LoanSelectProps {
   setDependentSelected?: React.Dispatch<React.SetStateAction<any | null>>[];
 };
 
+/**
+ * Returns dropdown element where user can select a loan
+ * @param props LoanSelectProps
+ * @returns React Select Element
+ */
 function LoanSelect(props: LoanSelectProps) {
   const {
     userId,

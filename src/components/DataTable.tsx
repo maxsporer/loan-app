@@ -2,7 +2,17 @@
 import React from 'react';
 import MaterialReactTable from 'material-react-table';
 
-function DataTable(props:any) {
+interface DataTableProps {
+  data: any;
+  columns: any;
+};
+
+/**
+ * Creates a table given data and column
+ * @param props DataTableProps
+ * @returns Material React Table Element
+ */
+function DataTable(props: DataTableProps) {
   const { data, columns } = props;
 
   return (

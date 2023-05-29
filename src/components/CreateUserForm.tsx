@@ -10,6 +10,10 @@ interface CreateUserState {
   error: boolean;
 };
 
+/**
+ * Returns form that creats a new user
+ * @returns HTMLElement
+ */
 function CreateUserForm() {
   var c = require('classnames');
   
@@ -28,6 +32,9 @@ function CreateUserForm() {
     setLocalStorage('createdUserState', state);
   });
 
+  /**
+   * Sends API request to create user
+   */
   function createPost() {
     axios
       .post(usersURL, {
@@ -44,7 +51,10 @@ function CreateUserForm() {
         console.error(error);
       });
   }
-  
+
+  /**
+   * Checks that all form inputs are valid
+   */
   function validateForm() {
     if (state.name.length < 3) {
       setState({...state, error: true});
@@ -54,6 +64,9 @@ function CreateUserForm() {
     }
   }
 
+  /**
+   * Sets all form inputs to default values
+   */
   function clearForm() {
     setState({
       ...state,
@@ -62,7 +75,11 @@ function CreateUserForm() {
       error: false,
     });
   }
-  
+
+  /**
+   * Updates value of input elements
+   * @param event React.FormEvent<HTMLInputElement>
+   */
   function handleChange(event: React.FormEvent<HTMLInputElement>) {
     setState({...state, name: event.currentTarget.value});
   }

@@ -12,6 +12,10 @@ interface FetchUserState {
   loans: Loan[] | null;
 }
 
+/**
+ * Returns form that fetches a user's loans
+ * @returns HTMLElement
+ */
 function FetchUserLoans() {
   var c = require('classnames');
   
@@ -79,6 +83,9 @@ function FetchUserLoans() {
     [],
   );
 
+  /**
+   * Sends API request to fetch loans
+   */
   function createGet() {
     const loansURL = `https://lending-api.azurewebsites.net/users/${id}/loans`;
     axios
@@ -93,6 +100,9 @@ function FetchUserLoans() {
       });
   }
 
+  /**
+   * Checks that all form inputs are valid
+   */
   function validateForm() {
     if (!id) {
       setState({...state, error: true});
@@ -102,6 +112,9 @@ function FetchUserLoans() {
     }
   }
 
+  /**
+   * Sets all form inputs to default values
+   */
   function clearForm() {
     setSelected(null);
     setId(null);

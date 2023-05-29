@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import Nav from '../components/Nav';
 import useViewport from '../utils/useViewport';
 
+/**
+ * Returns app header and navigation bar
+ * @returns HTMLElement
+ */
 function Header() {
   var c = require('classnames');
   const { width } = useViewport();

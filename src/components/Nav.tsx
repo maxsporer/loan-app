@@ -1,6 +1,10 @@
 import React from 'react';
 import NavItem from './NavItem';
 
+/**
+ * Returns navigation bar
+ * @returns HTMLElement
+ */
 function Nav() {
   return (
     <div className="flex text-base">

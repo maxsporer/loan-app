@@ -9,6 +9,10 @@ import { LoanData, User, Loan, Month, LoanMonth } from '../types';
 import DataTable from './DataTable';
 import { useLocalStorage, setLocalStorage } from '../utils/useLocalStorage';
 
+/**
+ * Returns form that fetches data given a loan
+ * @returns HTMLElement
+ */
 function FetchLoanData() {
   var c = require('classnames');
 
@@ -101,6 +105,9 @@ function FetchLoanData() {
     [],
   );
 
+  /**
+   * Sends API request to fetch loan data
+   */
   function createGet() {
     const loanDataURL = `https://lending-api.azurewebsites.net/loans/${loanId}?user_id=${userId}`;
     axios
@@ -115,6 +122,9 @@ function FetchLoanData() {
       });
   }
 
+  /**
+   * Checks that all form inputs are valid
+   */
   function validateForm() {
     if (!userId) {
       setUserError(true);
@@ -133,6 +143,9 @@ function FetchLoanData() {
     }
   }
 
+  /**
+   * Sets all form inputs to default values
+   */
   function clearForm() {
     setSelectedUser(null);
     setUserId(null);

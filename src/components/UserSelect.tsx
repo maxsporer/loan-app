@@ -11,6 +11,11 @@ interface UserSelectProps {
   omitId?: number;
 }
 
+/**
+ * Returns dropdown element where user can select a user
+ * @param props UserSelectProps
+ * @returns React Select Element
+ */
 function UserSelect(props: UserSelectProps) {
   const {
     selected,

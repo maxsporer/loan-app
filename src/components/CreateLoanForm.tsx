@@ -23,6 +23,10 @@ interface CreateLoanState {
   } | null;
 };
 
+/**
+ * Returns form that creates a loan
+ * @returns HTMLElement
+ */
 function CreateLoanForm() {
   var c = require('classnames');
 
@@ -55,7 +59,10 @@ function CreateLoanForm() {
     setLocalStorage('createLoanSelected', selected);
     setLocalStorage('createLoanId', id);
   });
-  
+
+  /**
+   * Sends API request to create loan
+   */
   function createPost() {
     axios
       .post(loansURL, {
@@ -84,6 +91,9 @@ function CreateLoanForm() {
       });
   }
 
+  /**
+   * Checks that all form inputs are valid
+   */
   function validateForm() {
     var newState = state;
     if (Number(state.amount) <= 0) {
@@ -115,6 +125,9 @@ function CreateLoanForm() {
     }
   }
 
+  /**
+   * Sets all form inputs to default values
+   */
   function clearForm() {
     setSelected(null);
     setId(null);
@@ -124,6 +137,10 @@ function CreateLoanForm() {
     });
   }
 
+  /**
+   * Updates value of input elements
+   * @param event React.FormEvent<HTMLInputElement>
+   */
   function handleChange(event: React.FormEvent<HTMLInputElement>) {
     const isCheckbox = event.currentTarget.type === "checkbox";
     const value = isCheckbox ? event.currentTarget.checked : event.currentTarget.value;

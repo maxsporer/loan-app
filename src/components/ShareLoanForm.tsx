@@ -6,6 +6,10 @@ import LoanSelect from './LoanSelect';
 import { User, Loan } from '../types';
 import { useLocalStorage, setLocalStorage } from '../utils/useLocalStorage';
 
+/**
+ * Returns form that shares a loan with another user
+ * @returns HTMLElement
+ */
 function ShareLoanForm() {
   var c = require('classnames');
 

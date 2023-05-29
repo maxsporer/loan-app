@@ -2,7 +2,17 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import useViewport from '../utils/useViewport';
 
-function NavItem(props:any) {
+interface NavItemProps {
+  verb: string;
+  link: string;
+}
+
+/**
+ * Returns a link to a page
+ * @param props NavItemsProps
+ * @returns HTMLElement
+ */
+function NavItem(props: NavItemProps) {
   const {
     verb,
     link

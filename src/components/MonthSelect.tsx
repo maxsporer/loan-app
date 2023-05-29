@@ -14,6 +14,11 @@ interface MonthSelectProps {
   setSummary: React.Dispatch<React.SetStateAction<LoanMonth | null>>;
 };
 
+/**
+ * Returns dropdown element where user can select a month
+ * @param props MonthSelectProps
+ * @returns React Select Element
+ */
 function MonthSelect(props: MonthSelectProps) {
   const {
     userId,
