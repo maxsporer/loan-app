@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import '../style/Form.scss';
 
-type CreateUserState = {
+interface CreateUserState {
   data: {
     id: string;
     username: string;
@@ -17,11 +17,13 @@ function CreateUserForm() {
   const usersURL = 'https://lending-api.azurewebsites.net/users';
 
   const [state, setState] = useState<CreateUserState>(
-    JSON.parse(localStorage.getItem('state') || '{}')
-    );
+    JSON.parse(
+      localStorage.getItem('createdUserState') ||
+      '{data: null,name: "",error: false,}')
+  );
 
   useEffect(() => {
-    localStorage.setItem('state', JSON.stringify(state))
+    localStorage.setItem('createdUserState', JSON.stringify(state));
   });
 
   function createPost() {
@@ -52,14 +54,15 @@ function CreateUserForm() {
 
   function clearForm() {
     setState({
+      ...state,
       data: null,
       name: '',
       error: false,
     });
   }
   
-  function handleChange(event:any) {
-    setState({...state, name: event.target.value});
+  function handleChange(event: React.FormEvent<HTMLInputElement>) {
+    setState({...state, name: event.currentTarget.value});
   }
   
   return (

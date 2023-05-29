@@ -1,26 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import '../style/Form.scss';
 import UserSelect from './UserSelect';
+import { User } from '../types';
+
+interface CreateLoanState {
+  amount: string;
+  amountError: boolean;
+  apr: string;
+  aprError: boolean;
+  term: string;
+  termError: boolean;
+  active: boolean;
+  data: {
+    amount: number;
+    apr: number;
+    id: number;
+    status: 'active' | 'inactive';
+    owner_id: number;
+    term: number;
+  } | null;
+};
 
 function CreateLoanForm() {
   var c = require('classnames');
 
   const loansURL = 'https://lending-api.azurewebsites.net/loans';
 
-  const [post, setPost] = useState(null);
-  const [selected, setSelected] = useState(null);
-  const [id, setId] = useState(null);
-  const [state, setState] = useState({
-    amount: '',
-    amountError: false,
-    apr: '',
-    aprError: false,
-    term: '',
-    termError: false,
-    active: true,
-  });
+  const [selected, setSelected] = useState<User | null>(
+    JSON.parse(localStorage.getItem('createLoanSelected') || '{}')
+  );
 
+  const [id, setId] = useState<number | null>(
+    JSON.parse(localStorage.getItem('createLoanId') || '{}')
+  );
+
+  const [state, setState] = useState<CreateLoanState>(
+    JSON.parse(
+      localStorage.getItem('createLoanState') || 
+      '{amount: "",amountError: false,apr: "",aprError: false,term: "",termError: false,active: true,data: null,}')
+  );
+
+  useEffect(() => {
+    localStorage.setItem('createLoanState', JSON.stringify(state));
+    localStorage.setItem('createLoanSelected', JSON.stringify(selected));
+    localStorage.setItem('createLoanId', JSON.stringify(id));
+  });
+  
   function createPost() {
     axios
       .post(loansURL, {
@@ -31,7 +57,6 @@ function CreateLoanForm() {
         "owner_id": id,
       })
       .then((response) => {
-        setPost(response.data);
         setSelected(null);
         setId(null);
         setState({
@@ -42,6 +67,7 @@ function CreateLoanForm() {
           term: '',
           termError: false,
           active: true,
+          data: response.data,
         });
       })
       .catch((error) => {
@@ -80,13 +106,29 @@ function CreateLoanForm() {
     }
   }
 
-  function handleChange(event:any) {
-    const isCheckbox = event.target.type === "checkbox";
-    const value = isCheckbox ? event.target.checked : event.target.value;
+  function clearForm() {
+    setSelected(null);
+    setId(null);
+    setState({
+      ...state,
+      amount: '',
+      amountError: false,
+      apr: '',
+      aprError: false,
+      term: '',
+      termError: false,
+      active: true,
+      data: null,
+    });
+  }
+
+  function handleChange(event: React.FormEvent<HTMLInputElement>) {
+    const isCheckbox = event.currentTarget.type === "checkbox";
+    const value = isCheckbox ? event.currentTarget.checked : event.currentTarget.value;
     
     setState({
       ...state,
-      [event.target.name]: isCheckbox ? value : String(value)
+      [event.currentTarget.name]: isCheckbox ? value : String(value)
     });
   }
 
@@ -147,25 +189,30 @@ function CreateLoanForm() {
             <input type="checkbox" name="active" checked={state.active} onChange={handleChange} />
           </label>
 
-          {post &&
+          {state.data &&
             <div className="flex flex-col pt-4">
               <div className="pb-1">
                 Loan created.
               </div>
               <div className="text-sm">
-                <div>ID: {post['id']}</div>
-                <div>Amount: ${post['amount']}</div>
-                <div>APR: {post['apr']}%</div>
-                <div>Term: {post['term']} months</div>
-                <div>Status: {post['status']}</div>
-                <div>Owner ID: {post['owner_id']}</div>
+                <div>ID: {state.data['id']}</div>
+                <div>Amount: ${state.data['amount']}</div>
+                <div>APR: {state.data['apr']}%</div>
+                <div>Term: {state.data['term']} months</div>
+                <div>Status: {state.data['status']}</div>
+                <div>Owner ID: {state.data['owner_id']}</div>
               </div>
             </div>
           }
 
-          <div className="Form-submitWrapper">
-            <button type="button" className="Form-submit" onClick={validateForm}>Create</button>
+          <div className="Form-buttons">
+            <div className="Form-clearWrapper">
+              <button type="button" className="Form-clear" onClick={clearForm}>Clear</button>
+            </div>
+            <div className="Form-submitWrapper">
+              <button type="button" className="Form-submit" onClick={validateForm}>Create</button>
           </div>
+            </div>
         </form>
       </div>
     </div>

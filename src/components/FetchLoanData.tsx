@@ -114,12 +114,12 @@ function FetchLoanData() {
           <div className="Form-form">
             <label className="Form-label">
               User :
-              <UserSelect
+              {/* <UserSelect
                 selected={selectedUser}
                 setSelected={setSelectedUser}
                 setId={setUserId}
                 setDependentSelected={[setSelectedLoan]}
-              />
+              /> */}
 
               <div className={c({
                 "hidden": !userError || selectedUser != null,

@@ -88,11 +88,11 @@ function FetchUserLoans() {
           <div className="Form-form">
             <label className="Form-label">
               User :
-              <UserSelect
+              {/* <UserSelect
                 selected={selected}
                 setSelected={setSelected}
                 setId={setId}
-              />
+              /> */}
 
               <div className={c({
                 "hidden": !error || selected != null,

@@ -1,8 +1,17 @@
 import React from 'react';
 import Select from 'react-select';
 import axios from "axios";
+import { User } from '../types';
 
-function UserSelect(props:any) {
+interface UserSelectProps {
+  selected: User | null;
+  setSelected: React.Dispatch<React.SetStateAction<User | null>>;
+  setId: React.Dispatch<React.SetStateAction<number | null>> ;
+  setDependentSelected?: React.Dispatch<React.SetStateAction<User | null>>[];
+  omitId?: number;
+}
+
+function UserSelect(props: UserSelectProps) {
   const {
     selected,
     setSelected,
@@ -12,14 +21,14 @@ function UserSelect(props:any) {
   } = props;
 
   const usersURL = 'https://lending-api.azurewebsites.net/users';
-  let options: any[] = []
+  let options: User[] = [];
 
-  function handleChange(selected: any) {
+  function handleChange(selected: User | null) {
     setSelected(selected);
-    setId(selected.id);
+    setId(selected!.id);
 
     if (setDependentSelected) {
-      setDependentSelected.forEach((set: any) => {
+      setDependentSelected.forEach((set: React.Dispatch<React.SetStateAction<User | null>>) => {
         set(null);
       });
     }

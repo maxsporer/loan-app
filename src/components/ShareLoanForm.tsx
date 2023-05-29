@@ -67,12 +67,12 @@ function ShareLoanForm() {
         <div className="Form-form">
           <label className="Form-label">
             Owner :
-            <UserSelect
+            {/* <UserSelect
               selected={selectedOwner}
               setSelected={setSelectedOwner}
               setId={setOwnerId}
               setDependentSelected={[setSelectedUser, setSelectedLoan]}
-            />
+            /> */}
 
             <div className={c({
               "hidden": !ownerError || selectedOwner != null,
@@ -86,13 +86,13 @@ function ShareLoanForm() {
           {ownerId &&
             <label className="Form-label">
               Recipient :
-              <UserSelect
+              {/* <UserSelect
                 selected={selectedUser}
                 setSelected={setSelectedUser}
                 setId={setUserId}
                 setDependentSelected={[setSelectedLoan]}
                 omitId={ownerId}
-              />
+              /> */}
 
               <div className={c({
                 "hidden": !userError || selectedUser != null || ownerError,

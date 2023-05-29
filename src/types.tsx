@@ -15,3 +15,9 @@ export interface LoanData {
   interest_payment: number;
   close_balance: number;
 }
+
+export interface User {
+  id: number;
+  label: string;
+  value: string;
+}
