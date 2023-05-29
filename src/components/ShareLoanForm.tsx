@@ -3,7 +3,8 @@ import axios from 'axios';
 import '../style/Form.scss';
 import UserSelect from './UserSelect';
 import LoanSelect from './LoanSelect';
-import { User, Loan } from '../types';
+import MonthSelect from './MonthSelect';
+import { User, Loan, Month, LoanMonth } from '../types';
 import { useLocalStorage, setLocalStorage } from '../utils/useLocalStorage';
 
 /**
@@ -43,6 +44,13 @@ function ShareLoanForm() {
     useLocalStorage('shareLoanLoanError', false)
   );
 
+  const [monthOption, setMonthOption] = useState<Month | null>(
+    useLocalStorage('fetchLoanMonthOption', null)
+  );
+  const [summary, setSummary] = useState<LoanMonth | null>(
+    useLocalStorage('fetchLoanSummary', null)
+  );
+
   const [success, setSuccess] = useState<boolean>(
     useLocalStorage('shareLoanSuccess', false)
   );
@@ -57,6 +65,8 @@ function ShareLoanForm() {
     setLocalStorage('shareLoanSelectedLoan', selectedLoan);
     setLocalStorage('shareLoanLoanId', loanId);
     setLocalStorage('shareLoanLoanError', loanError);
+    setLocalStorage('shareLoanMonthOption', monthOption);
+    setLocalStorage('shareLoanSummary', summary);
     setLocalStorage('shareLoanSuccess', success);
   });
 
@@ -107,6 +117,8 @@ function ShareLoanForm() {
     setSelectedLoan(null);
     setLoanId(null);
     setLoanError(false);
+    setMonthOption(null);
+    setSummary(null);
     setSuccess(false);
   }
 
@@ -176,6 +188,30 @@ function ShareLoanForm() {
                 Select a loan.
               </div>
             </label>
+          }
+
+          {selectedLoan &&
+            <div className="flex p-2 gap-x-4">
+              <div className="text-sm">
+                ID: {selectedLoan['id']}
+                <div className="flex flex-col pt-1">
+                  <div>Owner ID: {selectedLoan['owner_id']}</div>
+                  <div>Amount: ${selectedLoan['amount']}</div>
+                  <div>APR: {selectedLoan['apr']}%</div>
+                  <div>Term: {selectedLoan['term']} months</div>
+                  <div>Status: {selectedLoan['status']}</div>
+                </div>
+              </div>
+              <MonthSelect
+                userId={selectedLoan['owner_id']}
+                loanId={selectedLoan['id']}
+                term={selectedLoan['term']}
+                selected={monthOption}
+                setSelected={setMonthOption}
+                summary={summary}
+                setSummary={setSummary}
+              />
+            </div>
           }
 
           {success &&
