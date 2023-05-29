@@ -46,17 +46,27 @@
     padding: 4px;
   }
 
+  &-buttons
+  {
+    display: flex;
+    justify-content: center;
+    gap: 0 20px;
+  }
+
+  &-clearWrapper,
   &-submitWrapper {
     display: flex;
     padding-top: 16px;
     justify-content: center;
   }
 
+  &-clear,
   &-submit {
     width: fit;
     padding: 8px;
     border: 2px solid var(--tertiary);
     border-radius: 6px;
+    width: 80px;
 
     &:hover {
       background-color: var(--tertiary);

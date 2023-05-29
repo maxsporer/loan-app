@@ -19,7 +19,7 @@ function CreateLoanForm() {
     term: '',
     termError: false,
     active: true,
-  })
+  });
 
   function createPost() {
     axios

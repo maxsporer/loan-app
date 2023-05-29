@@ -1,24 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import '../style/Form.scss';
 
+type CreateUserState = {
+  data: {
+    id: string;
+    username: string;
+  } | null;
+  name: string;
+  error: boolean;
+};
+
 function CreateUserForm() {
   var c = require('classnames');
-
+  
   const usersURL = 'https://lending-api.azurewebsites.net/users';
 
-  const [post, setPost] = useState(null);
-  const [name, setName] = useState('');
-  const [error, setError] = useState(false);
+  const [state, setState] = useState<CreateUserState>(
+    JSON.parse(localStorage.getItem('state') || '{}')
+    );
+
+  useEffect(() => {
+    localStorage.setItem('state', JSON.stringify(state))
+  });
 
   function createPost() {
     axios
       .post(usersURL, {
-        "username": name
+        "username": state.name
       })
       .then((response) => {
-        setPost(response.data);
-        setName('');
+        setState({
+          ...state,
+          data: response.data,
+          name: '',
+        });
       })
       .catch((error) => {
         console.error(error);
@@ -26,18 +42,26 @@ function CreateUserForm() {
   }
   
   function validateForm() {
-    if (name.length < 3) {
-      setError(true);
+    if (state.name.length < 3) {
+      setState({...state, error: true});
     } else {
-      setError(false);
+      setState({...state, error: false});
       createPost();
     }
   }
+
+  function clearForm() {
+    setState({
+      data: null,
+      name: '',
+      error: false,
+    });
+  }
   
   function handleChange(event:any) {
-    setName(event.target.value)
+    setState({...state, name: event.target.value});
   }
-
+  
   return (
     <div className="Form-modal">
       <div className="Form-header">
@@ -47,10 +71,10 @@ function CreateUserForm() {
         <form className="Form-form">
           <label className="Form-label">
             Username :
-            <input className="Form-input" type="text" value={name} onChange={handleChange} />
+            <input className="Form-input" type="text" value={state.name} onChange={handleChange} />
 
             <div className={c({
-              "hidden": !error,
+              "hidden": !state.error,
               "Form-error": true,
               })}
             >
@@ -58,20 +82,25 @@ function CreateUserForm() {
             </div>
           </label>
 
-          {post &&
+          {state.data &&
             <div className="flex flex-col pt-4">
               <div className="pb-1 ">
                 User created.
               </div>
               <div className="text-sm">
-                <div>Username: {post['username']}</div>
-                <div>ID: {post['id']}</div>
+                <div>Username: {state.data['username']}</div>
+                <div>ID: {state.data['id']}</div>
               </div>
             </div>
           }
 
-          <div className="Form-submitWrapper">
-            <button type="button" className="Form-submit" onClick={validateForm}>Create</button>
+          <div className="Form-buttons">
+            <div className="Form-clearWrapper">
+              <button type="button" className="Form-clear" onClick={clearForm}>Clear</button>
+            </div>
+            <div className="Form-submitWrapper">
+              <button type="button" className="Form-submit" onClick={validateForm}>Create</button>
+            </div>
           </div>
         </form>
       </div>
