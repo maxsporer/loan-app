@@ -1,7 +1,15 @@
-In the project directory, you can run:
+## To start app, in the project directory, run:
 
-### `npm install`
-### `npm start`
+`npm install`<br>
+`npm start`
+
+## Packages:
+
+- [axios](https://axios-http.com/)
+- [react-select](https://react-select.com/home)
+- [material-react-table](https://www.material-react-table.com/)
+- [sass](https://sass-lang.com/)
+- [tailwind](https://tailwindcss.com/)
 
 
 # Greystone Labs Frontend Code Challenge
