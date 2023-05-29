@@ -107,13 +107,13 @@ function ShareLoanForm() {
           {ownerId && userId &&
             <label className="Form-label">
               Loan :
-              <LoanSelect
+              {/* <LoanSelect
                 data={ownerId}
                 selected={selectedLoan}
                 setSelected={setSelectedLoan}
                 setId={setLoanId}
                 ownerId={ownerId}
-              />
+              /> */}
 
               <div className={c({
                 "hidden": !loanError || selectedLoan != null ||  userError,

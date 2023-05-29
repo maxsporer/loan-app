@@ -1,18 +1,42 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from "axios";
 import '../style/Form.scss';
 import UserSelect from './UserSelect';
 import DataTable from './DataTable';
-import { Loan } from '../types';
+import { Loan, User } from '../types';
 import type { MRT_ColumnDef } from 'material-react-table';
+import { useLocalStorage, setLocalStorage } from '../utils/useLocalStorage';
+
+interface FetchUserState {
+  error: boolean;
+  loans: Loan[] | null;
+}
 
 function FetchUserLoans() {
   var c = require('classnames');
+  
+  const defaultState = {
+    error: false,
+    loans: null,
+  };
+  
+  const [state, setState] = useState<FetchUserState>(
+    useLocalStorage('fetchUserState', defaultState)
+  );
 
-  const [selected, setSelected] = useState(null);
-  const [id, setId] = useState(null);
-  const [error, setError] = useState(false);
-  const [loans, setLoans] = useState<Loan[]>();
+  const [selected, setSelected] = useState<User | null>(
+    useLocalStorage('fetchUserSelected', null)
+  );
+
+  const [id, setId] = useState<number | null>(
+    useLocalStorage('fetchUserId', null)
+  );
+
+  useEffect(() => {
+    setLocalStorage('fetchUserState', state);
+    setLocalStorage('fetchUserSelected', selected);
+    setLocalStorage('fetchUserId', id);
+  });
 
   // define columns for data table
   const columns = useMemo<MRT_ColumnDef<Loan>[]>(
@@ -62,7 +86,7 @@ function FetchUserLoans() {
         responseType: 'json',
       })
       .then((response) => {
-        setLoans(response.data);
+        setState({...state, loans: response.data});
       })
       .catch((error) => {
         console.error(error);
@@ -71,11 +95,20 @@ function FetchUserLoans() {
 
   function validateForm() {
     if (!id) {
-      setError(true);
+      setState({...state, error: true});
     } else {
-      setError(false);
+      setState({...state, error: false});
       createGet();
     }
+  }
+
+  function clearForm() {
+    setSelected(null);
+    setId(null);
+    setState({
+      ...state,
+      ...defaultState,
+    });
   }
 
   return (
@@ -88,29 +121,34 @@ function FetchUserLoans() {
           <div className="Form-form">
             <label className="Form-label">
               User :
-              {/* <UserSelect
+              <UserSelect
                 selected={selected}
                 setSelected={setSelected}
                 setId={setId}
-              /> */}
+              />
 
               <div className={c({
-                "hidden": !error || selected != null,
+                "hidden": !state.error || selected != null,
                 "Form-error": true,
                 })}
               >
                 Select a user.
               </div>
             </label>
-            <div className="Form-submitWrapper">
-              <button type="button" className="Form-submit" onClick={validateForm}>Fetch</button>
+            <div className="Form-buttons">
+              <div className="Form-clearWrapper">
+                <button type="button" className="Form-clear" onClick={clearForm}>Clear</button>
+              </div>
+              <div className="Form-submitWrapper">
+                <button type="button" className="Form-submit" onClick={validateForm}>Fetch</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      {loans &&
+      {state.loans &&
         <div className="px-4 pt-8 pb-4 z-0 relative">
-          <DataTable data={loans} columns={columns}/>
+          <DataTable data={state.loans} columns={columns}/>
         </div>
       }
     </>

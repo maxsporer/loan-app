@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import axios from "axios";
+import axios from 'axios';
+import { UserData } from '../types';
+import { useLocalStorage, setLocalStorage } from '../utils/useLocalStorage';
 import '../style/Form.scss';
 
 interface CreateUserState {
-  data: {
-    id: string;
-    username: string;
-  } | null;
+  data: UserData | null;
   name: string;
   error: boolean;
 };
@@ -15,15 +14,18 @@ function CreateUserForm() {
   var c = require('classnames');
   
   const usersURL = 'https://lending-api.azurewebsites.net/users';
+  const defaultState = {
+    data: null,
+    name: "",
+    error: false,
+  };
 
   const [state, setState] = useState<CreateUserState>(
-    JSON.parse(
-      localStorage.getItem('createdUserState') ||
-      '{data: null,name: "",error: false,}')
+    useLocalStorage('createdUserState', defaultState)
   );
 
   useEffect(() => {
-    localStorage.setItem('createdUserState', JSON.stringify(state));
+    setLocalStorage('createdUserState', state);
   });
 
   function createPost() {

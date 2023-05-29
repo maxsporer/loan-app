@@ -2,8 +2,19 @@
 import React from 'react';
 import Select from 'react-select';
 import axios from 'axios';
+import { Month, LoanMonth } from '../types';
 
-function MonthSelect(props: any) {
+interface MonthSelectProps {
+  userId: number;
+  loanId: number;
+  term: number;
+  selected: Month | null;
+  setSelected: React.Dispatch<React.SetStateAction<Month | null>>;
+  summary: LoanMonth | null;
+  setSummary: React.Dispatch<React.SetStateAction<LoanMonth | null>>;
+};
+
+function MonthSelect(props: MonthSelectProps) {
   const {
     userId,
     loanId,
@@ -16,7 +27,7 @@ function MonthSelect(props: any) {
 
   let month: any = null;
   
-  let options = [];
+  let options: Month[] = [];
   for (let i = 1; i <= term; i++) {
     options.push({
       value: i,
@@ -38,9 +49,9 @@ function MonthSelect(props: any) {
       });
   }
 
-  function handleChange(selected: any) {
+  function handleChange(selected: Month | null) {
     setSelected(selected);
-    month = selected['value'];
+    month = selected!.value;
     getSummary();
   }
 

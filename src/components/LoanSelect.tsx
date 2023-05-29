@@ -1,39 +1,52 @@
 
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import Select from 'react-select';
 import axios from 'axios';
+import { User, Loan } from '../types';
 
-function LoanSelect(props: any) {
+interface LoanSelectProps {
+  userId: number;
+  ownerId?: number;
+  selected: Loan | null;
+  setSelected: React.Dispatch<React.SetStateAction<Loan | null>>;
+  setId: React.Dispatch<React.SetStateAction<number | null>>;
+  setDependentSelected?: React.Dispatch<React.SetStateAction<any | null>>[];
+};
+
+function LoanSelect(props: LoanSelectProps) {
   const {
-    data,
+    userId,
+    ownerId,
     selected,
     setSelected,
     setId,
-    ownerId,
     setDependentSelected,
   } = props;
 
-  let options: any[] = [];
+  let options: Loan[] = [];
 
-  function handleChange(selected: any) {
+  function handleChange(selected: Loan | null) {
     setSelected(selected);
-    setId(selected.id);
+    setId(selected!.id);
 
     if (setDependentSelected) {
-      setDependentSelected.forEach((set: any) => {
+      setDependentSelected.forEach((set:
+        React.Dispatch<React.SetStateAction<User | null>> |
+        React.Dispatch<React.SetStateAction<Loan | null>>
+        ) => {
         set(null);
       });
     }
   }
 
   function getLoans() {
-    const loansURL = `https://lending-api.azurewebsites.net/users/${data}/loans`;
+    const loansURL = `https://lending-api.azurewebsites.net/users/${userId}/loans`;
     axios
       .get(loansURL, {
         responseType: 'json',
       })
       .then((response) => {
-        response.data.forEach((loan: any) => {
+        response.data.forEach((loan: Loan) => {
           // only include loans with this owner
           if (ownerId && ownerId !== loan.owner_id) return;
           const label = (ownerId === null ?
@@ -57,7 +70,9 @@ function LoanSelect(props: any) {
       });
   }
 
-  if (options.length === 0) getLoans();
+  useEffect(() => {
+    if (options.length === 0) getLoans();
+  });
 
   const placeholder = (ownerId === null ?
     "(id) (owner id) amount" :

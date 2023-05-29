@@ -3,6 +3,7 @@ import axios from "axios";
 import '../style/Form.scss';
 import UserSelect from './UserSelect';
 import { User } from '../types';
+import { useLocalStorage, setLocalStorage } from '../utils/useLocalStorage';
 
 interface CreateLoanState {
   amount: string;
@@ -26,25 +27,33 @@ function CreateLoanForm() {
   var c = require('classnames');
 
   const loansURL = 'https://lending-api.azurewebsites.net/loans';
+  const defaultState = {
+    amount: "",
+    amountError: false,
+    apr: "",
+    aprError: false,
+    term: "",
+    termError: false,
+    active: true,
+    data: null,
+  };
+
+  const [state, setState] = useState<CreateLoanState>(
+    useLocalStorage('createLoanState', defaultState)
+  );
 
   const [selected, setSelected] = useState<User | null>(
-    JSON.parse(localStorage.getItem('createLoanSelected') || '{}')
+    useLocalStorage('createLoanSelected', null)
   );
 
   const [id, setId] = useState<number | null>(
-    JSON.parse(localStorage.getItem('createLoanId') || '{}')
+    useLocalStorage('createLoanId', null)
   );
-
-  const [state, setState] = useState<CreateLoanState>(
-    JSON.parse(
-      localStorage.getItem('createLoanState') || 
-      '{amount: "",amountError: false,apr: "",aprError: false,term: "",termError: false,active: true,data: null,}')
-  );
-
+  
   useEffect(() => {
-    localStorage.setItem('createLoanState', JSON.stringify(state));
-    localStorage.setItem('createLoanSelected', JSON.stringify(selected));
-    localStorage.setItem('createLoanId', JSON.stringify(id));
+    setLocalStorage('createLoanState', state);
+    setLocalStorage('createLoanSelected', selected);
+    setLocalStorage('createLoanId', id);
   });
   
   function createPost() {
@@ -111,14 +120,7 @@ function CreateLoanForm() {
     setId(null);
     setState({
       ...state,
-      amount: '',
-      amountError: false,
-      apr: '',
-      aprError: false,
-      term: '',
-      termError: false,
-      active: true,
-      data: null,
+      ...defaultState,
     });
   }
 

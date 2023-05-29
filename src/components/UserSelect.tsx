@@ -1,13 +1,13 @@
 import React from 'react';
 import Select from 'react-select';
-import axios from "axios";
-import { User } from '../types';
+import axios from 'axios';
+import { User, Loan, UserData } from '../types';
 
 interface UserSelectProps {
   selected: User | null;
   setSelected: React.Dispatch<React.SetStateAction<User | null>>;
   setId: React.Dispatch<React.SetStateAction<number | null>> ;
-  setDependentSelected?: React.Dispatch<React.SetStateAction<User | null>>[];
+  setDependentSelected?: React.Dispatch<React.SetStateAction<any | null>>[];
   omitId?: number;
 }
 
@@ -28,7 +28,10 @@ function UserSelect(props: UserSelectProps) {
     setId(selected!.id);
 
     if (setDependentSelected) {
-      setDependentSelected.forEach((set: React.Dispatch<React.SetStateAction<User | null>>) => {
+      setDependentSelected.forEach(
+        (set:
+          React.Dispatch<React.SetStateAction<User | null>> | React.Dispatch<React.SetStateAction<Loan | null>>
+        ) => {
         set(null);
       });
     }
@@ -40,7 +43,7 @@ function UserSelect(props: UserSelectProps) {
         responseType: 'json',
       })
       .then((response) => {
-        response.data.forEach((user: any) => {
+        response.data.forEach((user: UserData) => {
           // omit this user from list
           if (omitId && user.id === omitId) return;
 

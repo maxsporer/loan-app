@@ -1,29 +1,57 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import axios from 'axios';
 import '../style/Form.scss';
 import UserSelect from './UserSelect';
 import LoanSelect from './LoanSelect';
 import MonthSelect from './MonthSelect';
 import type { MRT_ColumnDef } from 'material-react-table';
-import { LoanData } from '../types';
+import { LoanData, User, Loan, Month, LoanMonth } from '../types';
 import DataTable from './DataTable';
+import { useLocalStorage, setLocalStorage } from '../utils/useLocalStorage';
 
 function FetchLoanData() {
   var c = require('classnames');
 
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [userError, setUserError] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(
+    useLocalStorage('fetchLoanSelectedUser', null)
+  );
+  const [userId, setUserId] = useState<number | null>(
+    useLocalStorage('fetchLoanUserId', null)
+  );
+  const [userError, setUserError] = useState<boolean>(
+    useLocalStorage('fetchLoanUserError', false)
+  );
+  const [selectedLoan, setSelectedLoan] = useState<Loan | null>(
+    useLocalStorage('fetchLoanSelectedLoan', null)
+  );
+  const [loanId, setLoanId] = useState<number | null>(
+    useLocalStorage('fetchLoanLoanId', null)
+  );
+  const [loanError, setLoanError] = useState<boolean>(
+    useLocalStorage('fetchLoanLoanId', false)
+  );
 
-  const [selectedLoan, setSelectedLoan] = useState(null);
-  const [loanId, setLoanId] = useState(null);
-  const [loanError, setLoanError] = useState(false);
+  const [monthOption, setMonthOption] = useState<Month | null>(
+    useLocalStorage('fetchLoanMonthOption', null)
+  );
+  const [summary, setSummary] = useState<LoanMonth | null>(
+    useLocalStorage('fetchLoanSummary', null)
+  );
 
-  const [monthOption, setMonthOption] = useState(null);
-  const [summary, setSummary] = useState(null);
+  const [loanData, setLoanData] = useState<LoanData[] | null>(
+    useLocalStorage('fetchLoanData', null)
+  );
 
-  const [loanData, setLoanData] = useState<LoanData[]>();
-
+  useEffect(() => {
+    setLocalStorage('fetchLoanSelectedUser', selectedUser);
+    setLocalStorage('fetchLoanUserId', userId);
+    setLocalStorage('fetchLoanUserError', userError);
+    setLocalStorage('fetchLoanSelectedLoan', selectedLoan);
+    setLocalStorage('fetchLoanLoanId', loanId);
+    setLocalStorage('fetchLoanMonthOption', monthOption);
+    setLocalStorage('fetchLoanSummary', summary);
+    setLocalStorage('fetchLoanData', loanData);
+  });
   
   // define columns for data table
   const columns = useMemo<MRT_ColumnDef<LoanData>[]>(
@@ -104,6 +132,18 @@ function FetchLoanData() {
     }
   }
 
+  function clearForm() {
+    setSelectedUser(null);
+    setUserId(null);
+    setUserError(false);
+    setSelectedLoan(null);
+    setLoanId(null);
+    setLoanError(false);
+    setMonthOption(null);
+    setSummary(null);
+    setLoanData(null);
+  }
+
   return (
     <>
       <div className="Form-modal z-10 relative">
@@ -114,12 +154,12 @@ function FetchLoanData() {
           <div className="Form-form">
             <label className="Form-label">
               User :
-              {/* <UserSelect
+              <UserSelect
                 selected={selectedUser}
                 setSelected={setSelectedUser}
                 setId={setUserId}
                 setDependentSelected={[setSelectedLoan]}
-              /> */}
+              />
 
               <div className={c({
                 "hidden": !userError || selectedUser != null,
@@ -134,11 +174,10 @@ function FetchLoanData() {
               <label className="Form-label">
                 Loan :
                 <LoanSelect
-                  data={userId}
+                  userId={userId}
                   selected={selectedLoan}
                   setSelected={setSelectedLoan}
                   setId={setLoanId}
-                  ownerId={null}
                   setDependentSelected={[setMonthOption, setSummary]}
                 />
 
@@ -176,10 +215,13 @@ function FetchLoanData() {
               </div>
             }
 
-
-
-            <div className="Form-submitWrapper">
-              <button type="button" className="Form-submit" onClick={validateForm}>Fetch</button>
+            <div className="Form-buttons">
+              <div className="Form-clearWrapper">
+                <button type="button" className="Form-clear" onClick={clearForm}>Clear</button>
+              </div>
+              <div className="Form-submitWrapper">
+                <button type="button" className="Form-submit" onClick={validateForm}>Fetch</button>
+              </div>
             </div>
           </div>
         </div>
