@@ -21,6 +21,7 @@ function FetchLoanData() {
   const [userError, setUserError] = useState<boolean>(
     useLocalStorage('fetchLoanUserError', false)
   );
+  
   const [selectedLoan, setSelectedLoan] = useState<Loan | null>(
     useLocalStorage('fetchLoanSelectedLoan', null)
   );

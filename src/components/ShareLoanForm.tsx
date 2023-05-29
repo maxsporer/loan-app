@@ -1,25 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../style/Form.scss';
 import UserSelect from './UserSelect';
 import LoanSelect from './LoanSelect';
+import { User, Loan } from '../types';
+import { useLocalStorage, setLocalStorage } from '../utils/useLocalStorage';
 
 function ShareLoanForm() {
   var c = require('classnames');
 
-  const [selectedOwner, setSelectedOwner] = useState(null);
-  const [ownerId, setOwnerId] = useState(null);
-  const [ownerError, setOwnerError] = useState(false);
+  const [selectedOwner, setSelectedOwner] = useState<User | null>(
+    useLocalStorage('shareLoanSelectedOwner', null)
+  );
+  const [ownerId, setOwnerId] = useState<number | null>(
+    useLocalStorage('shareLoanOwnerId', null)
+  );
+  const [ownerError, setOwnerError] = useState<boolean>(
+    useLocalStorage('shareLoanOwnerError', false)
+  );
   
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [userError, setUserError] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(
+    useLocalStorage('shareLoanSelectedUser', null)
+  );
+  const [userId, setUserId] = useState<number | null>(
+    useLocalStorage('shareLoanUserId', null)
+  );
+  const [userError, setUserError] = useState<boolean>(
+    useLocalStorage('shareLoanUserError', false)
+  );
 
-  const [selectedLoan, setSelectedLoan] = useState(null);
-  const [loanId, setLoanId] = useState(null);
-  const [loanError, setLoanError] = useState(false);
+  const [selectedLoan, setSelectedLoan] = useState<Loan | null>(
+    useLocalStorage('shareLoanSelectedLoan', null)
+  );
+  const [loanId, setLoanId] = useState<number | null>(
+    useLocalStorage('shareLoanLoanId', null)
+  );
+  const [loanError, setLoanError] = useState<boolean>(
+    useLocalStorage('shareLoanLoanError', false)
+  );
 
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState<boolean>(
+    useLocalStorage('shareLoanSuccess', false)
+  );
+
+  useEffect(() => {
+    setLocalStorage('shareLoanSelectedOwner', selectedOwner);
+    setLocalStorage('shareLoanOwnerId', ownerId);
+    setLocalStorage('shareLoanOwnerError', ownerError);
+    setLocalStorage('shareLoanSelectedUser', selectedUser);
+    setLocalStorage('shareLoanUserId', userId);
+    setLocalStorage('shareLoanUserError', userError);
+    setLocalStorage('shareLoanSelectedLoan', selectedLoan);
+    setLocalStorage('shareLoanLoanId', loanId);
+    setLocalStorage('shareLoanLoanError', loanError);
+    setLocalStorage('shareLoanSuccess', success);
+  });
 
   function createPost() {
     const shareURL = `https://lending-api.azurewebsites.net/loans/${loanId}/share?owner_id=${ownerId}&user_id=${userId}`;
@@ -58,6 +93,19 @@ function ShareLoanForm() {
     }
   }
 
+  function clearForm() {
+    setSelectedOwner(null);
+    setOwnerId(null);
+    setOwnerError(false);
+    setSelectedUser(null);
+    setUserId(null);
+    setUserError(false);
+    setSelectedLoan(null);
+    setLoanId(null);
+    setLoanError(false);
+    setSuccess(false);
+  }
+
   return (
     <div className="Form-modal">
       <div className="Form-header">
@@ -67,12 +115,12 @@ function ShareLoanForm() {
         <div className="Form-form">
           <label className="Form-label">
             Owner :
-            {/* <UserSelect
+            <UserSelect
               selected={selectedOwner}
               setSelected={setSelectedOwner}
               setId={setOwnerId}
-              setDependentSelected={[setSelectedUser, setSelectedLoan]}
-            /> */}
+              setDependentSelected={[setSelectedUser, setSelectedLoan, setSuccess]}
+            />
 
             <div className={c({
               "hidden": !ownerError || selectedOwner != null,
@@ -86,13 +134,13 @@ function ShareLoanForm() {
           {ownerId &&
             <label className="Form-label">
               Recipient :
-              {/* <UserSelect
+              <UserSelect
                 selected={selectedUser}
                 setSelected={setSelectedUser}
                 setId={setUserId}
-                setDependentSelected={[setSelectedLoan]}
+                setDependentSelected={[setSelectedLoan, setSuccess]}
                 omitId={ownerId}
-              /> */}
+              />
 
               <div className={c({
                 "hidden": !userError || selectedUser != null || ownerError,
@@ -107,13 +155,14 @@ function ShareLoanForm() {
           {ownerId && userId &&
             <label className="Form-label">
               Loan :
-              {/* <LoanSelect
-                data={ownerId}
+              <LoanSelect
+                userId={ownerId}
                 selected={selectedLoan}
                 setSelected={setSelectedLoan}
                 setId={setLoanId}
                 ownerId={ownerId}
-              /> */}
+                setDependentSelected={[setSuccess]}
+              />
 
               <div className={c({
                 "hidden": !loanError || selectedLoan != null ||  userError,
@@ -129,8 +178,13 @@ function ShareLoanForm() {
             <div>Success.</div>
           }
 
-          <div className="Form-submitWrapper">
-            <button type="button" className="Form-submit" onClick={validateForm}>Share</button>
+          <div className="Form-buttons">
+            <div className="Form-clearWrapper">
+              <button type="button" className="Form-clear" onClick={clearForm}>Clear</button>
+            </div>
+            <div className="Form-submitWrapper">
+              <button type="button" className="Form-submit" onClick={validateForm}>Share</button>
+            </div>
           </div>
         </div>
       </div>
