@@ -115,6 +115,7 @@ function FetchLoanData() {
         responseType: 'json',
       })
       .then((response) => {
+        console.log(response.data);
         setLoanData(response.data);
       })
       .catch((error) => {

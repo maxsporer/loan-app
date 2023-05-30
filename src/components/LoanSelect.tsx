@@ -75,9 +75,7 @@ function LoanSelect(props: LoanSelectProps) {
       });
   }
 
-  useEffect(() => {
-    if (options.length === 0) getLoans();
-  });
+  if (options.length === 0) getLoans();
 
   const placeholder = (ownerId === null ?
     "(id) (owner id) amount" :
